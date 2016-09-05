@@ -7,8 +7,7 @@ class m160805_004401_add_new_fields_to_user extends Migration
     public function up()
     {
         $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+        if ($this->db->driverName === 'mysql') {      
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 	$this->addColumn('user','avatar', 'string null');

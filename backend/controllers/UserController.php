@@ -99,19 +99,8 @@ class UserController extends Controller
 			
             $model->setPassword($model->new_password);
             $model->generateAuthKey();
-            if ($model->save(false)){
-				
-				/*
-				// process uploaded image file instance
-				$image = $model->uploadImage();
-
-				// upload only if valid uploaded file instance found
-				if ($image !== false) {
-					$path = $model->getImageFile();
-					$image->saveAs($path);
-				}
-				*/
 			
+            if ($model->save(false)){	
 				$model->avatar = UploadedFile::getInstance($model, 'avatar');
 				
 				if (!$model->upload($model->avatar)) {
@@ -179,61 +168,6 @@ class UserController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-		return;	
-	
-		
-        $model = $this->findModel($id);
-		//$oldFile = $model->getImageFile();
-        $oldAvatar = $model->avatar;
-		$model->avatar="ssasas";
-		$model->save();
-        if ($model->load(Yii::$app->request->post())) {
-            // process uploaded image file instance
-			 $model->avatar= UploadedFile::getInstance($model, 'avatar');
-			if($imageName=$model->upload($model->avatar))
-			{
-				$model->avatar=$imageName ;
-				$model->save();
-			}
-			//if (!$model->upload($model->avatar)) 
-			//	$model->avatar = $oldAvatar;
-			//else
-                // upload only if valid uploaded file instance found
-              //   unlink($oldFile);
-				 
-				 
-				
-			$model->scenario = 'changePass';
-			// save changes
-			if ($model->load(Yii::$app->request->post())) {
-				
-				// If any pass field is empty do not change password
-				if (empty($model->old_password) || empty($model->new_password) || empty($model->repeat_password)) 
-					$model->scenario = 'default';
-
-				if ($model->validate()) {
-					$model->setPassword($model->new_password);
-					if ($model->save(false)) {
-						Yii::$app->getSession()->setFlash('success',"Your Password was modified successfully.");
-						return $this->redirect(['view', 'id' => $model->id]);
-					}else
-						Yii::$app->getSession()->setFlash('error',"There was an error saving your data, please try again later.");
-				} else
-					Yii::$app->getSession()->setFlash('error',"Please correct the mistakes and try again.");
-
-			}
-			return $this->redirect(['view', 'id'=>$model->_id]);
-		} else {
-				Yii::$app->getSession()->setFlash('error',"There was an error storing the image, please try again later.");
-				return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
-		$model->scenario = 'default';
-		return $this->render('update', [
-			'model' => $model,
-		]);
-    	
 	}
     /**
      * Deletes an existing User model.

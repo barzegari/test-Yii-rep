@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\FileInput;
-
+use yii\web\User;
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 /* @var $form yii\widgets\ActiveForm */
@@ -39,7 +39,7 @@ use kartik\widgets\FileInput;
 		
 		// display the image uploaded or show a placeholder
 		$title = 'Avatar';
-		echo Html::img($model->getImageUrl(), [
+		echo Html::img('/uploads/'.$model->avatar, [
 			'class'=>'', 
 			'alt'=>$title, 
 			'title'=>$title

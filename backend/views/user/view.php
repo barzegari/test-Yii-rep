@@ -5,29 +5,29 @@ use yii\web\User;
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 $this->title = $model->username;
-$avatar_url = $model->getImageUrl() ;
 ?>
 <div class="user-view">
-    <?php
-    echo Html::img($avatar_url, ['class'=>'img-responsive center-block']);
-    ?>
     <h1><?= Html::encode($this->title) ?></h1>
-
-
-
     <?php
+	
     $details = [
         'model' => $model,
         'attributes' => [
             'username:text:Username',
             'email:email:Email',
             'mobile:text:Mobile Number',
-			'avatar:image:Avatar',
+			[
+			  'attribute'=>'image',
+			  'label'=> 'Avatar Picture',
+			  'value'=> '/uploads/' . $model->avatar,
+			  'format'=>['image',['width'=>100, 'height'=>100]]
+    		],
             'created_at:datetime:Member since',
             ['label'=> 'Status', 'value'=> ($model->status == 10) ? 'Active':'Deleted'],
         ],
     ];
-    echo DetailView::widget($details) ?>
+    echo DetailView::widget($details) ;
+	?>
     <p>
         <?php if (!Yii::$app->user->isGuest ){ ?>
         <?= Html::a('Edit User', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -37,10 +37,12 @@ $avatar_url = $model->getImageUrl() ;
                 'confirm' => Yii::t('yii','Are you sure you want to delete your profile?'),
                 'method' => 'post',
             ],
-        ]) ;
-		//Yii::$app->user->findIdentity($model->id)->avatar;
-		echo Html::a( Yii::t('yii', 'Users List'), ['index'], ['class' => 'btn btn-success']); 
-		} 
+        ]) ;?>
+
+		<?= Html::a( Yii::t('yii', 'Users List'), ['index'], ['class' => 'btn btn-success']) ?>
+		 
+		<?php 
+			} 
 		?>
     </p>
 </div>

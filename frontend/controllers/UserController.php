@@ -83,21 +83,19 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-		
-		
-		
         $model = $this->findModel($id);
         //check if it is the own user
         if (Yii::$app->user->isGuest || $model->id != Yii::$app->user->identity->id) {
             Yii::$app->getSession()->setFlash('error',"You can't modify another user's profile");
             return $this->goHome();
         }
+		
         $original_name = $model->avatar;
         // Upload new avatar
 
         $model->avatar = UploadedFile::getInstance($model, 'avatar');
         if (is_object($model->avatar)) {
-       
+       		$avatar_name = uniqid() . "." . $model->avatar->extension;
             if (!empty($original_name)) {
                 $avatar_name = $original_name;
             }

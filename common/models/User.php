@@ -34,6 +34,7 @@ class User extends ActiveRecord implements IdentityInterface
 	
 	const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+	
 
 
     /**
@@ -73,7 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['username', 'required'],
             ['username', 'unique'],
 			['avatar', 'image','skipOnEmpty' => true],
-            [['image'], 'file','skipOnEmpty' => true,  'extensions'=>'jpg,png'],
+           
 			
         ];
     }
@@ -217,6 +218,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function upload($avatar_name)
     {
 		try{
+			$imagePath= Yii::getAlias('@backend').'/web/uploads/';
 		
 			if ($this->validate() ){
 				
@@ -240,11 +242,11 @@ class User extends ActiveRecord implements IdentityInterface
 				switch($this->avatar->extension)
 				{
 					case "png":{
-							imagepng($new_image, Yii::$app->basePath. '/web/images/' . $imageName);
+							imagepng($new_image, $imagePath . $imageName);
 						break;
 					}
 					case "jpg":{
-							imagejpeg($new_image, Yii::$app->basePath. '/web/images/' . $imageName);
+							imagejpeg($new_image, $imagePath. $imageName);
 						break;
 					}
 				}
@@ -296,7 +298,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         // return a default image placeholder if your source avatar is not found
 		$avatar = isset($this->avatar) ? $this->avatar : 'default_user.jpg';
-        return  '/images/' . $avatar;
+        return  '/uploads/' . $avatar;
 		
     }
 
